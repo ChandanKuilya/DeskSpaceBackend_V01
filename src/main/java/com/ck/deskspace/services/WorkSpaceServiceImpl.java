@@ -7,6 +7,10 @@ import com.ck.deskspace.models.Amenity;
 import com.ck.deskspace.models.WorkSpace;
 import com.ck.deskspace.repository.IAmenityRepository;
 import com.ck.deskspace.repository.IWorkSpaceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +19,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class WorkSpaceServiceImpl implements IWorkSpaceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(WorkSpaceServiceImpl.class);
+
 
     private final IWorkSpaceRepository workspaceRepository;
     private final IAmenityRepository amenityRepository;
@@ -26,6 +33,7 @@ public class WorkSpaceServiceImpl implements IWorkSpaceService {
     }
 
     @Override
+    @CacheEvict(value = "workspaces", allEntries = true) // <--- CLEAR CACHE
     public WorkSpaceResponseDTO createWorkspace(WorkSpaceRequestDTO request) {
         // 1. Fetch Amenities from DB based on IDs sent by Admin
         Set<Amenity> amenities = amenityRepository.findAllByIdIn(request.getAmenityIds());
@@ -47,9 +55,16 @@ public class WorkSpaceServiceImpl implements IWorkSpaceService {
         return mapToResponseDTO(savedworkSpace);
     }
 
-
     @Override
+    @Cacheable(value = "workspaces") // <--- USE CACHE
     public List<WorkSpaceResponseDTO> getAllWorkspaces() {
+
+        // Simulate slowness (Optional: uncomment to feel the speed difference)
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
 
         return workspaceRepository.findAll().stream()
                 .map(this::mapToResponseDTO)
