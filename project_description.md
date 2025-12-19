@@ -135,6 +135,6 @@ graph TD
 | **Metrics** | Actuator + Micrometer | Prometheus-ready metrics exposure. |
 
 ## 5. Potential Improvements & Notes
-1.  **Bug Fix**: In [AuthService.java](file:///c:/Users/CHANDAN%20KUILYA/Music/FOLDER_DISC/NOW%20Phase%20Dev/Java_Backend/IntelliJ%20Ultimate/WorkSpace06/DeskSpace/src/main/java/com/ck/deskspace/services/AuthService.java), line 37: `user.setFirstName(request.getLastName());` should be `getFirstName()`.
-2.  **Validation**: Backend validation (e.g., checking if a workspace is *already* booked for a time slot) isn't explicitly visible in the controller but should be in `BookingService`.
-3.  **Error Handling**: Frontend has basic error alerts; Backend likely has global exception handling (seen in `exception` package).
+
+1.  **Validation**: Backend validation (e.g., checking if a workspace is *already* booked for a time slot) isn't explicitly visible in the controller but should be in `BookingService`.
+2.  **Error Handling**: Frontend has basic error alerts; Backend likely has global exception handling (seen in `exception` package).
