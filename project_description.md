@@ -1,4 +1,4 @@
-# DeskSpace Project Analysis & High-Level Design (HLD)
+# DeskSpace Project V01 (HLD)
 
 ## 1. Executive Summary
 **DeskSpace** is a workspace booking application consisting of a **Spring Boot Backend** (`DeskSpace`) and a **Vanilla JavaScript Frontend** (`deskSpace-FrontEnd`). The application allows users to register, log in via JWT authentication, browse available workspaces (desks/rooms), and book them for specific time slots.
@@ -21,7 +21,6 @@ The entry point for all users. The application is secured, requiring a valid JWT
     -   **Action**: `POST /api/auth/register` with JSON payload.
     -   **Backend**: [AuthController](file:///c:/Users/CHANDAN%20KUILYA/Music/FOLDER_DISC/NOW%20Phase%20Dev/Java_Backend/IntelliJ%20Ultimate/WorkSpace06/DeskSpace/src/main/java/com/ck/deskspace/controllers/AuthController.java#12-33) receives request -> [AuthService](file:///c:/Users/CHANDAN%20KUILYA/Music/FOLDER_DISC/NOW%20Phase%20Dev/Java_Backend/IntelliJ%20Ultimate/WorkSpace06/DeskSpace/src/main/java/com/ck/deskspace/services/AuthService.java#13-63) checks for existing email -> Hashes password (BCrypt) -> Saves `User` entity to DB.
     -   **Response**: 200 OK with success message.
-    -   **Note**: A logic bug exists in [AuthService.java](file:///c:/Users/CHANDAN%20KUILYA/Music/FOLDER_DISC/NOW%20Phase%20Dev/Java_Backend/IntelliJ%20Ultimate/WorkSpace06/DeskSpace/src/main/java/com/ck/deskspace/services/AuthService.java) (Line 37) where `firstName` is incorrectly set to `request.getLastName()`.
 
 2.  **Login**:
     -   **Frontend**: User enters `Email`, `Password`.
