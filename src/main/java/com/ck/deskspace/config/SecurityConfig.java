@@ -71,6 +71,7 @@ public class SecurityConfig {
     @Order(1) // Applies First!
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .securityMatcher("/actuator/**") // Only match actuator URLs
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -87,6 +88,7 @@ public class SecurityConfig {
     @Order(2) // Applies Second
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .securityMatcher("/**") // Match everything else
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth

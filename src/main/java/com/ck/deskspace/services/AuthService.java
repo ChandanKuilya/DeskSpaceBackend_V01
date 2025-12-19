@@ -34,7 +34,7 @@ public class AuthService {
 
         // 2. Create User Entity & HASH the password
         User user = new User();
-        user.setFirstName(request.getLastName());
+        user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword())); // <--- Crucial Step
