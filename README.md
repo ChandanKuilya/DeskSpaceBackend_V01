@@ -1,4 +1,65 @@
 
+The following diagram illustrates the interaction between the User, Client (Frontend), and the Backend layers (Controller, Service, Repository, Database).
+
+```mermaid
+graph TD
+    %% Actors and Client
+    User[User]
+    Client[Frontend Client<br>Vanilla JS / Browser]
+    
+    %% Backend Boundary
+    subgraph Backend [Backend Server - Spring Boot]
+        AuthCtrl[AuthController]
+        WSCtrl[WorkSpaceController]
+        BookCtrl[BookingController]
+        
+        Security[Security Filter Chain<br>JWT & Basic Auth]
+        
+        AuthSvc[AuthService]
+        WSSvc[WorkSpaceService]
+        BookSvc[BookingService]
+        
+        RepoUser[UserRepository]
+        RepoWS[WorkSpaceRepository]
+        RepoBook[BookingRepository]
+    end
+    
+    %% Database Boundary
+    subgraph Data [Data Persistence]
+        DB[(MySQL Database)]
+    end
+    
+    %% Relationships
+    User -->|Interacts| Client
+    
+    %% Frontend to Backend (API Calls)
+    Client -->|POST /auth/login| Security
+    Client -->|GET /workspaces| Security
+    Client -->|POST /bookings| Security
+    
+    %% Security Layer Routing
+    Security -->|Public Access| AuthCtrl
+    Security -->|Authenticated| WSCtrl
+    Security -->|Authenticated| BookCtrl
+    
+    %% Controllers to Services
+    AuthCtrl -->|Login/Register| AuthSvc
+    WSCtrl -->|CRUD Operations| WSSvc
+    BookCtrl -->|Create/View| BookSvc
+    
+    %% Services to Repositories
+    AuthSvc -->|Find/Save User| RepoUser
+    WSSvc -->|Fetch Workspaces| RepoWS
+    BookSvc -->|Save Booking| RepoBook
+    BookSvc -->|Fetch User| RepoUser
+    BookSvc -->|Fetch Workspace| RepoWS
+    
+    %% Repositories to Database
+    RepoUser -->|SQL| DB
+    RepoWS -->|SQL| DB
+    RepoBook -->|SQL| DB
+```
+
 
 
 <img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/523ec126-e000-4965-bc9e-8d4ca42ba1dd" />
