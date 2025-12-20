@@ -43,8 +43,9 @@ public class AuthService {
         // 3. Save
         userRepository.save(user);
 
-        // 4. Return dummy token (we will implement real JWT generation in Part 2)
-        return new AuthResponseDTO("User registered successfully. Login to get token.");
+        // 4. Return response with user details
+        return new AuthResponseDTO("User registered successfully. Login to get token.",
+                user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole().name());
     }
 
     // Adding the Login Method
@@ -57,6 +58,10 @@ public class AuthService {
         // 2. If step 1 didn't throw an exception, the user is valid. Generate Token.
         String token = jwtService.generateToken(request.getEmail());
 
-        return new AuthResponseDTO(token);
+        // 3. Fetch User Details to return
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new AuthResponseDTO(token, user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole().name());
     }
 }
